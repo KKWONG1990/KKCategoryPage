@@ -1,0 +1,16 @@
+PODS:
+  - KKCategoryPage (1.0.0)
+
+DEPENDENCIES:
+  - KKCategoryPage (from `../`)
+
+EXTERNAL SOURCES:
+  KKCategoryPage:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  KKCategoryPage: c69d7c5fe1aa33518280e6df2a542f3424f1ccb9
+
+PODFILE CHECKSUM: d8f973ed9fb801d7ea4bbb697efd1164640534b7
+
+COCOAPODS: 1.11.2

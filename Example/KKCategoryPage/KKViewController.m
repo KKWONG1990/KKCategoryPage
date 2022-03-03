@@ -7,8 +7,12 @@
 //
 
 #import "KKViewController.h"
-
-@interface KKViewController ()
+#import "KKDefaultCategoryPage.h"
+#import "KKCustomCellCategoryPage.h"
+#import "KKMultiSectionCategoryPage.h"
+@interface KKViewController ()<UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong) UITableView * tableView;
+@property (nonatomic, strong) NSArray * datasource;
 
 @end
 
@@ -17,7 +21,36 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    self.view.backgroundColor = UIColor.whiteColor;
+    self.datasource = @[@{@"系统TableViewCell":KKDefaultCategoryPage.class}, @{@"自定义TableViewCell":KKCustomCellCategoryPage.class},@{@"多分区":KKMultiSectionCategoryPage.class}];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+    self.tableView.backgroundColor = UIColor.whiteColor;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.view addSubview:self.tableView];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.datasource.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary * dict = [self.datasource objectAtIndex:indexPath.row];
+    NSString * text = dict.allKeys.firstObject;
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(UITableViewCell.class)];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(UITableViewCell.class)];
+    }
+    cell.textLabel.text = text;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    NSDictionary * dict = [self.datasource objectAtIndex:indexPath.row];
+    Class cls = dict.allValues.firstObject;
+    UIViewController * vc = [[cls alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
